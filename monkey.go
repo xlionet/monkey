@@ -25,7 +25,7 @@ type Monkey struct {
 var ErrMonkeyIsNotOpen = errors.New("monkey instance is not open")
 
 // NewMonkey new
-func NewMonkey(pt Protocol) *Monkey {
+func New(pt Protocol, config *Config) *Monkey {
 	m := &Monkey{
 		Upgrader: &websocket.Upgrader{
 			ReadBufferSize:   1024,
@@ -35,7 +35,7 @@ func NewMonkey(pt Protocol) *Monkey {
 		},
 
 		WsProtocol: pt,
-		conf:       NewConfig(),
+		conf:       config,
 		Open:       true,
 	}
 	return m

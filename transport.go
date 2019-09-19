@@ -74,7 +74,7 @@ func (s *WSTransport) beginWork(protocol Protocol) {
 
 	s.wg.Add(1)
 	go s.writePump(protocol)
-	fmt.Println("monkey start")
+	fmt.Println("monkey start") // use log
 }
 
 func (s *WSTransport) writePump(protocol Protocol) {

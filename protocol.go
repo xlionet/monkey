@@ -29,14 +29,11 @@ func (p *WSProtocol) OnTransportData(transport Transport, env *Envelope) {
 
 // OnPing ...
 func (p *WSProtocol) OnPing(pp []byte) []byte {
-
-	return append(pp, []byte("my ping")...)
-
+	return pp
 }
 
 // OnPong ...
 func (p *WSProtocol) OnPong(pp []byte) error {
-
 	return nil
 }
 
