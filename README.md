@@ -34,21 +34,21 @@ generally, you just need to implement `Protocol` interface with your business, a
 
     ``` Golang
 
-func main() {
+    func main() {
 
-	protocol := &Echo{}
-	cfg := monkey.NewConfig()
-	cfg.WSListernPort = 8080
-	mk := monkey.New(protocol, cfg)
+        protocol := &Echo{}
+        cfg := monkey.NewConfig()
+        cfg.WSListernPort = 8080
+        mk := monkey.New(protocol, cfg)
 
-	http.HandleFunc("/echo", func(w http.ResponseWriter, r *http.Request) {
-		err := mk.HandleConnection(w, r)
-		if err != nil {
-			log.Fatal(err)
-		}
-	})
-	http.HandleFunc("/", index)
+        http.HandleFunc("/echo", func(w http.ResponseWriter, r *http.Request) {
+            err := mk.HandleConnection(w, r)
+            if err != nil {
+                log.Fatal(err)
+            }
+        })
+        http.HandleFunc("/", index)
 
-	mk.Serve(http.DefaultServeMux)
-}
+        mk.Serve(http.DefaultServeMux)
+    }
     ```
