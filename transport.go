@@ -3,6 +3,7 @@ package monkey
 import (
 	"errors"
 	"fmt"
+	"log"
 	"sync"
 	"time"
 
@@ -74,7 +75,7 @@ func (s *WSTransport) beginWork(protocol Protocol) {
 
 	s.wg.Add(1)
 	go s.writePump(protocol)
-	fmt.Println("monkey start") // use log
+
 }
 
 func (s *WSTransport) writePump(protocol Protocol) {
@@ -101,7 +102,7 @@ func (s *WSTransport) writePump(protocol Protocol) {
 
 			// 收到客户端的退出信息
 			if msg.T == websocket.CloseMessage {
-				fmt.Println("exit: recv close message")
+				log.Output(1, "exit: recv close message")
 				return
 			}
 
@@ -113,8 +114,7 @@ func (s *WSTransport) writePump(protocol Protocol) {
 
 		case <-s.quitSig:
 			//可能会有没有读完的 buff 包 TODO: 需要处理掉，不然会丢包
-
-			fmt.Println("exit: recv quit signal")
+			log.Output(1, "exit: recv quit signal")
 			return
 		}
 	}
@@ -143,7 +143,7 @@ func (s *WSTransport) close() {
 	// send close msg to close conn
 	err := s.writeRaw(&Envelope{T: websocket.CloseMessage, Msg: []byte{}})
 	if err != nil {
-		fmt.Println("send close message to client failed with err:", err)
+		log.Output(1, fmt.Sprintf("send close message to client failed with err: %v", err))
 	}
 
 	close(s.output)
@@ -234,7 +234,7 @@ func (s *WSTransport) GetTag(key interface{}) interface{} {
 // HandleError err 处理
 func (s *WSTransport) HandleError(err error) {
 	// log(err)
-	fmt.Printf("meet error:%v", err)
+	log.Output(1, fmt.Sprintf("meet error:%v", err))
 }
 
 // 退出有两种，1 服务端主动让客户端退出， 2 客户端自己触发的退出，有可能都没有发出退出的信息msg

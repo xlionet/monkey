@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log"
 	"sync"
 )
 
@@ -80,7 +81,7 @@ func (jp *JSONPacketProcess) OnTransportData(transport Transport, envelop *Envel
 	var base JSONGatePacket
 	err := jp.Packeter.Unpack(envelop.Msg, &base)
 	if err != nil {
-		fmt.Println("unpack failed", err)
+		log.Output(1, fmt.Sprintf("unpack failed %v", err))
 		return
 	}
 
@@ -92,7 +93,7 @@ func (jp *JSONPacketProcess) OnTransportData(transport Transport, envelop *Envel
 	// error 不需要抛到这一层，因为这是业务逻辑代码，出错了这里也处理不了
 	defer func() {
 		if err := recover(); err != nil {
-			fmt.Println("process message encounter panic:", err)
+			log.Output(1, fmt.Sprintf("process message encounter panic: %v", err))
 		}
 	}()
 	ctx := context.Background()
@@ -101,7 +102,7 @@ func (jp *JSONPacketProcess) OnTransportData(transport Transport, envelop *Envel
 
 // OnPing implement for protocol
 func (jp *JSONPacketProcess) OnPing(m []byte) []byte {
-	fmt.Println("on ping")
+	log.Output(1, "on ping")
 	return m
 }
 
